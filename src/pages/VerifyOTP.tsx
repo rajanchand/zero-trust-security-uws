@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Shield, KeyRound, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,8 +53,8 @@ export default function VerifyOTP() {
   const secs = countdown % 60;
 
   return (
-    <div className="min-h-screen bg-background grid-bg flex items-center justify-center p-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md text-center">
         <Shield className="h-10 w-10 text-primary mx-auto mb-4" />
         <h1 className="text-2xl font-bold text-foreground mb-2">OTP Verification</h1>
         <p className="text-sm text-muted-foreground mb-2">
@@ -65,7 +64,6 @@ export default function VerifyOTP() {
         </p>
 
         <div className="rounded-lg border border-border bg-card p-6">
-          {/* Channel indicator */}
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Mail className="h-3.5 w-3.5 text-primary" />
@@ -89,33 +87,30 @@ export default function VerifyOTP() {
               className="text-center text-2xl tracking-[0.5em] font-mono h-14" required autoFocus
             />
             <div className="flex items-center justify-center gap-3">
-              <div className={`text-sm font-mono ${countdown <= 60 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              <div className={`text-sm ${countdown <= 60 ? 'text-destructive' : 'text-muted-foreground'}`}>
                 {countdown > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : 'Expired'}
               </div>
-              <span className="text-muted-foreground">•</span>
+              <span className="text-muted-foreground">·</span>
               <div className="text-xs text-muted-foreground">5 min expiry</div>
             </div>
 
-            {/* Progress bar */}
             <div className="w-full bg-secondary rounded-full h-1">
-              <motion.div
-                className="h-1 rounded-full gradient-primary"
-                initial={{ width: '100%' }}
-                animate={{ width: `${(countdown / 300) * 100}%` }}
-                transition={{ duration: 1 }}
+              <div
+                className="h-1 rounded-full bg-primary transition-all duration-1000"
+                style={{ width: `${(countdown / 300) * 100}%` }}
               />
             </div>
 
-            <Button type="submit" className="w-full gradient-primary border-0 text-primary-foreground" disabled={loading || countdown === 0 || otp.length !== 6}>
+            <Button type="submit" className="w-full" disabled={loading || countdown === 0 || otp.length !== 6}>
               {loading ? 'Verifying...' : 'Verify & Continue'}
             </Button>
           </form>
           <Button variant="ghost" className="mt-3 text-primary" onClick={handleResend} disabled={countdown > 270}>
             Resend OTP {countdown > 270 ? `(${countdown - 270}s)` : ''}
           </Button>
-          <p className="text-xs text-muted-foreground mt-4">💡 OTP is logged to browser console (F12)</p>
+          <p className="text-xs text-muted-foreground mt-4">OTP is shown in toast notification above</p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

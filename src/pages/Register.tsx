@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Shield, Mail, Lock, User, Phone, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,12 +41,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-background grid-bg flex items-center justify-center p-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
             <Shield className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-gradient">Zero Trust</span>
+            <span className="text-xl font-bold text-primary">Zero Trust</span>
           </Link>
           <h1 className="text-2xl font-bold text-foreground">Create Account</h1>
           <p className="text-sm text-muted-foreground mt-1">Register to access the Zero Trust platform</p>
@@ -92,7 +91,7 @@ export default function Register() {
                 <Input type="password" placeholder="••••••••" value={form.confirmPassword} onChange={e => update('confirmPassword', e.target.value)} className="pl-10" required />
               </div>
             </div>
-            <Button type="submit" className="w-full gradient-primary border-0 text-primary-foreground" disabled={loading}>
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creating...' : 'Create Account'}
             </Button>
           </form>
@@ -100,7 +99,7 @@ export default function Register() {
             Already have an account? <Link to="/login" className="text-primary hover:underline">Sign In</Link>
           </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

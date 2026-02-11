@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Users, Monitor, CheckCircle, XCircle, Unlock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -52,7 +51,7 @@ export default function Admin() {
         </div>
 
         {tab === 'users' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-lg border border-border bg-card overflow-x-auto">
+          <div className="rounded-lg border border-border bg-card overflow-x-auto">
             <table className="w-full text-sm">
               <thead><tr className="border-b border-border bg-secondary/30 text-muted-foreground">
                 <th className="p-3 text-left">Name</th><th className="p-3 text-left">Email</th><th className="p-3 text-left">Role</th><th className="p-3 text-left">Status</th><th className="p-3 text-left">Actions</th>
@@ -61,7 +60,7 @@ export default function Admin() {
                 {users.map(u => (
                   <tr key={u.id} className="border-b border-border last:border-0">
                     <td className="p-3 text-foreground">{u.fullName}</td>
-                    <td className="p-3 font-mono text-primary text-xs">{u.email}</td>
+                    <td className="p-3 text-primary text-xs">{u.email}</td>
                     <td className="p-3">
                       <Select value={u.role} onValueChange={v => handleRoleChange(u.id, v)}>
                         <SelectTrigger className="w-32 h-8"><SelectValue /></SelectTrigger>
@@ -69,7 +68,7 @@ export default function Admin() {
                       </Select>
                     </td>
                     <td className="p-3">
-                      <span className={`font-mono text-xs ${u.status === 'active' ? 'text-success' : u.status === 'locked' ? 'text-warning' : 'text-destructive'}`}>
+                      <span className={`text-xs ${u.status === 'active' ? 'text-success' : u.status === 'locked' ? 'text-warning' : 'text-destructive'}`}>
                         {u.status}
                       </span>
                     </td>
@@ -88,11 +87,11 @@ export default function Admin() {
                 ))}
               </tbody>
             </table>
-          </motion.div>
+          </div>
         )}
 
         {tab === 'devices' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-lg border border-border bg-card overflow-x-auto">
+          <div className="rounded-lg border border-border bg-card overflow-x-auto">
             <table className="w-full text-sm">
               <thead><tr className="border-b border-border bg-secondary/30 text-muted-foreground">
                 <th className="p-3 text-left">User</th><th className="p-3 text-left">Browser/OS</th><th className="p-3 text-left">Fingerprint</th><th className="p-3 text-left">Posture</th><th className="p-3 text-left">Approved</th><th className="p-3 text-left">Actions</th>
@@ -104,9 +103,9 @@ export default function Admin() {
                   return (
                     <tr key={d.id} className="border-b border-border last:border-0">
                       <td className="p-3 text-foreground">{owner?.fullName || d.userId}</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">{d.browser} / {d.os}</td>
-                      <td className="p-3 font-mono text-xs text-primary">{d.fingerprint}</td>
-                      <td className="p-3"><span className={`font-mono text-xs ${postureScore >= 3 ? 'text-success' : postureScore >= 2 ? 'text-warning' : 'text-destructive'}`}>{postureScore}/4</span></td>
+                      <td className="p-3 text-xs text-muted-foreground">{d.browser} / {d.os}</td>
+                      <td className="p-3 text-xs text-primary">{d.fingerprint}</td>
+                      <td className="p-3"><span className={`text-xs ${postureScore >= 3 ? 'text-success' : postureScore >= 2 ? 'text-warning' : 'text-destructive'}`}>{postureScore}/4</span></td>
                       <td className="p-3">{d.approved ? <CheckCircle className="h-4 w-4 text-success" /> : <XCircle className="h-4 w-4 text-destructive" />}</td>
                       <td className="p-3 flex gap-2">
                         {!d.approved && <Button size="sm" variant="outline" onClick={() => handleApprove(d.id)}>Approve</Button>}
@@ -118,11 +117,11 @@ export default function Admin() {
                 {devices.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">No devices</td></tr>}
               </tbody>
             </table>
-          </motion.div>
+          </div>
         )}
 
         {tab === 'logs' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-lg border border-border bg-card overflow-x-auto">
+          <div className="rounded-lg border border-border bg-card overflow-x-auto">
             <table className="w-full text-sm">
               <thead><tr className="border-b border-border bg-secondary/30 text-muted-foreground">
                 <th className="p-3 text-left">Time</th><th className="p-3 text-left">User</th><th className="p-3 text-left">Action</th><th className="p-3 text-left">Risk</th><th className="p-3 text-left">Outcome</th><th className="p-3 text-left">Location</th>
@@ -130,18 +129,18 @@ export default function Admin() {
               <tbody>
                 {logs.map(l => (
                   <tr key={l.id} className="border-b border-border last:border-0 text-xs">
-                    <td className="p-3 font-mono text-muted-foreground whitespace-nowrap">{new Date(l.timestamp).toLocaleString()}</td>
-                    <td className="p-3 text-primary font-mono">{l.userEmail || l.userId}</td>
+                    <td className="p-3 text-muted-foreground whitespace-nowrap">{new Date(l.timestamp).toLocaleString()}</td>
+                    <td className="p-3 text-primary">{l.userEmail || l.userId}</td>
                     <td className="p-3 text-foreground font-semibold">{l.action}</td>
-                    <td className="p-3 font-mono">{l.riskScore ?? '—'}</td>
-                    <td className="p-3"><span className={`font-mono ${l.outcome === 'success' ? 'text-success' : l.outcome === 'blocked' ? 'text-destructive' : 'text-warning'}`}>{l.outcome}</span></td>
+                    <td className="p-3">{l.riskScore ?? '—'}</td>
+                    <td className="p-3"><span className={l.outcome === 'success' ? 'text-success' : l.outcome === 'blocked' ? 'text-destructive' : 'text-warning'}>{l.outcome}</span></td>
                     <td className="p-3 text-muted-foreground">{l.location}</td>
                   </tr>
                 ))}
                 {logs.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">No logs</td></tr>}
               </tbody>
             </table>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
